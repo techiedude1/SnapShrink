@@ -2,193 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Image Compressor | Compress & Convert to WebP</title>
+    <title>Ultimate Image Compressor | Compress & Convert to WebP or PNG</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Compress and convert your images to WebP with zero quality loss. Fast, easy, and 100% privacy — your images never leave your device.">
-    <meta name="keywords" content="image compressor, webp converter, reduce image size, compress images online, photo optimizer, lossless image compression, image to webp">
+    <meta name="description" content="Compress and convert your images to WebP or PNG with zero quality loss. Fast, easy, and 100% privacy — your images never leave your device.">
+    <meta name="keywords" content="image compressor, webp converter, png converter, reduce image size, compress images online, photo optimizer, lossless image compression, image to webp, image to png">
     <meta name="robots" content="index,follow">
+    <!-- Use your custom SVG favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Fira+Code:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
-            display: flex; flex-direction: column;
-        }
-        .container {
-            position: relative;
-            max-width: 520px;
-            margin: 60px auto;
-            background: rgba(255,255,255,0.97);
-            border-radius: 26px;
-            box-shadow: 0 8px 50px 0 rgba(60,75,120,.22);
-            padding: 44px 32px 32px 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow: hidden;
-        }
-        .container::before {
-            content: '';
-            position: absolute;
-            left: -60px; top: -60px;
-            width: 160px; height: 160px;
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            opacity: 0.16;
-            border-radius: 80px;
-            z-index: 0;
-        }
-        .container::after {
-            content: '';
-            position: absolute;
-            right: -80px; bottom: -80px;
-            width: 190px; height: 190px;
-            background: linear-gradient(135deg, #3a86ff 0%, #4361ee 100%);
-            opacity: 0.10;
-            border-radius: 95px;
-            z-index: 0;
-        }
-        .headline {
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-size: 2.65rem;
-            color: #243152;
-            font-weight: 800;
-            margin: 0 0 8px 0;
-            letter-spacing: -2px;
-            background: linear-gradient(90deg, #0f2027 10%, #4361ee 50%, #43e97b 90%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            filter: drop-shadow(0 2px 2px rgba(44,68,117,0.10));
-            text-align: center;
-        }
-        .headline span {
-            font-size: 1.35rem;
-            font-family: 'Fira Code', monospace;
-            background: #eafcff;
-            color: #28a745;
-            border-radius: 8px;
-            padding: 2px 9px;
-            font-weight: 600;
-            box-shadow: 0 1px 5px rgba(44, 68, 117, .08);
-        }
-        .headline-sub {
-            color: #3a536b;
-            font-size: 1.18rem;
-            margin-bottom: 20px;
-            font-family: 'Montserrat', Arial, sans-serif;
-            text-align: center;
-            font-weight: 500;
-        }
-        .upload-box {display: flex; flex-direction: column; align-items: center; width: 100%; z-index: 2;}
-        .upload-label {
-            background: linear-gradient(100deg, #43e97b 0%, #38f9d7 100%);
-            color: #1b2546;
-            border-radius: 14px;
-            padding: 14px 38px;
-            font-weight: 800;
-            font-size: 1.12rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: box-shadow 0.22s;
-            box-shadow: 0 2px 12px rgba(44,68,117,0.12);
-            letter-spacing: 0.5px;
-            position: relative;
-        }
-        .upload-label::after {
-            content: '\\1F4E4';
-            position: absolute;
-            right: 15px;
-            top: 11px;
-            font-size: 1.2rem;
-            opacity: 0.23;
-        }
-        .upload-label:hover {
-            box-shadow: 0 4px 18px rgba(44,68,117,0.19);
-            background: linear-gradient(100deg, #38f9d7 0%, #43e97b 100%);
-        }
-        #imageInput {display: none;}
-        .preview {
-            max-width: 260px; max-height: 170px;
-            border-radius: 12px;
-            box-shadow: 0 2px 14px rgba(44,68,117,0.13);
-            margin-bottom: 18px;
-            object-fit: contain;
-            background: #eafcff;
-        }
-        .slider-container {
-            width: 100%; margin: 10px 0 26px 0;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .slider-label {
-            color: #1e3799; font-weight: 700; font-size: 1.12rem; margin-bottom: 5px;
-        }
-        .slider {
-            width: 96%;
-            accent-color: #4361ee;
-        }
-        .btn {
-            margin-top: 17px;
-            background: linear-gradient(90deg, #4361ee 0%, #3a86ff 100%);
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            padding: 14px 42px;
-            font-weight: 800;
-            font-size: 1.19rem;
-            cursor: pointer;
-            box-shadow: 0 2px 18px rgba(67,97,238,0.18);
-            transition: background 0.17s, box-shadow 0.19s, transform 0.10s;
-            letter-spacing: 0.2px;
-        }
-        .btn:hover {
-            background: linear-gradient(90deg, #43e97b 0%, #4361ee 100%);
-            box-shadow: 0 5px 22px rgba(67,97,238,0.23);
-            transform: translateY(-2px) scale(1.04);
-        }
-        .output-section {
-            margin-top: 33px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .download-link {
-            margin-top: 16px;
-            color: #1b9aaa;
-            font-weight: 800;
-            font-size: 1.19rem;
-            text-decoration: none;
-            transition: color 0.18s;
-            border-bottom: 2px dashed #3a86ff;
-            padding-bottom: 1px;
-        }
-        .download-link:hover {
-            color: #e17055;
-            border-bottom: 2px solid #e17055;
-        }
-        .meta-info {font-size: 1.04rem; color: #385170; margin: 4px 0;}
-        .footer {
-            margin: 64px auto 14px auto;
-            text-align: center;
-            color: #8aa3bc;
-            font-size: 1.08rem;
-            font-family: 'Montserrat', Arial, sans-serif;
-            letter-spacing: 0.1px;
-        }
-        .footer a {color: #1b9aaa; text-decoration: none; font-weight: 600;}
-        .footer a:hover {color: #4361ee; text-decoration: underline;}
-        @media (max-width:650px) {
-            .container {max-width:98vw;padding:22px 3vw 16px 3vw;}
-            .headline {font-size:1.45rem;}
-            .headline span {font-size:0.97rem;}
-        }
+        body {margin:0;padding:0;font-family:'Roboto',Arial,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f2027 0%,#2c5364 100%);display:flex;flex-direction:column;}
+        .container {position:relative;max-width:520px;margin:60px auto;background:rgba(255,255,255,0.97);border-radius:26px;box-shadow:0 8px 50px 0 rgba(60,75,120,.22);padding:44px 32px 32px 32px;display:flex;flex-direction:column;align-items:center;overflow:hidden;}
+        .container::before {content:'';position:absolute;left:-60px;top:-60px;width:160px;height:160px;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);opacity:0.16;border-radius:80px;z-index:0;}
+        .container::after {content:'';position:absolute;right:-80px;bottom:-80px;width:190px;height:190px;background:linear-gradient(135deg,#3a86ff 0%,#4361ee 100%);opacity:0.10;border-radius:95px;z-index:0;}
+        .headline {font-family:'Montserrat',Arial,sans-serif;font-size:2.65rem;color:#243152;font-weight:800;margin:0 0 8px 0;letter-spacing:-2px;background:linear-gradient(90deg,#0f2027 10%,#4361ee 50%,#43e97b 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-fill-color:transparent;filter:drop-shadow(0 2px 2px rgba(44,68,117,0.10));text-align:center;}
+        .headline span {font-size:1.35rem;font-family:'Fira Code',monospace;background:#eafcff;color:#28a745;border-radius:8px;padding:2px 9px;font-weight:600;box-shadow:0 1px 5px rgba(44,68,117,.08);}
+        .headline-sub {color:#3a536b;font-size:1.18rem;margin-bottom:20px;font-family:'Montserrat',Arial,sans-serif;text-align:center;font-weight:500;}
+        .upload-box {display:flex;flex-direction:column;align-items:center;width:100%;z-index:2;}
+        .upload-label {background:linear-gradient(100deg,#43e97b 0%,#38f9d7 100%);color:#1b2546;border-radius:14px;padding:14px 38px;font-weight:800;font-size:1.12rem;cursor:pointer;margin-bottom:20px;transition:box-shadow 0.22s;box-shadow:0 2px 12px rgba(44,68,117,0.12);letter-spacing:0.5px;position:relative;}
+        .upload-label::after {content:'\1F4E4';position:absolute;right:15px;top:11px;font-size:1.2rem;opacity:0.23;}
+        .upload-label:hover {box-shadow:0 4px 18px rgba(44,68,117,0.19);background:linear-gradient(100deg,#38f9d7 0%,#43e97b 100%);}
+        #imageInput {display:none;}
+        .preview {max-width:260px;max-height:170px;border-radius:12px;box-shadow:0 2px 14px rgba(44,68,117,0.13);margin-bottom:18px;object-fit:contain;background:#eafcff;}
+        .slider-container {width:100%;margin:10px 0 20px 0;display:flex;flex-direction:column;align-items:center;}
+        .slider-label {color:#1e3799;font-weight:700;font-size:1.12rem;margin-bottom:5px;}
+        .slider {width:96%;accent-color:#4361ee;}
+        .format-container {width:100%;display:flex;justify-content:center;align-items:center;margin-bottom:12px;gap:16px;}
+        .format-radio {appearance:none;width:1.3em;height:1.3em;border-radius:50%;border:2px solid #4361ee;margin-right:8px;vertical-align:middle;outline:none;transition:border .2s;background:#fff;}
+        .format-radio:checked {background:radial-gradient(circle,#4361ee 40%,#fff 100%);border:2.5px solid #43e97b;}
+        .format-label {font-family:'Fira Code',monospace;color:#4361ee;font-weight:700;font-size:1.09rem;user-select:none;cursor:pointer;}
+        .btn {margin-top:17px;background:linear-gradient(90deg,#4361ee 0%,#3a86ff 100%);color:#fff;border:none;border-radius:15px;padding:14px 42px;font-weight:800;font-size:1.19rem;cursor:pointer;box-shadow:0 2px 18px rgba(67,97,238,0.18);transition:background 0.17s,box-shadow 0.19s,transform 0.10s;letter-spacing:0.2px;}
+        .btn:hover {background:linear-gradient(90deg,#43e97b 0%,#4361ee 100%);box-shadow:0 5px 22px rgba(67,97,238,0.23);transform:translateY(-2px) scale(1.04);}
+        .output-section {margin-top:33px;width:100%;display:flex;flex-direction:column;align-items:center;}
+        .download-link {margin-top:16px;color:#1b9aaa;font-weight:800;font-size:1.19rem;text-decoration:none;transition:color 0.18s;border-bottom:2px dashed #3a86ff;padding-bottom:1px;}
+        .download-link:hover {color:#e17055;border-bottom:2px solid #e17055;}
+        .meta-info {font-size:1.04rem;color:#385170;margin:4px 0;}
+        .footer {margin:64px auto 14px auto;text-align:center;color:#8aa3bc;font-size:1.08rem;font-family:'Montserrat',Arial,sans-serif;letter-spacing:0.1px;}
+        .footer a {color:#1b9aaa;text-decoration:none;font-weight:600;}
+        .footer a:hover {color:#4361ee;text-decoration:underline;}
+        @media (max-width:650px) {.container {max-width:98vw;padding:22px 3vw 16px 3vw;}.headline {font-size:1.45rem;}.headline span {font-size:0.97rem;}}
     </style>
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"WebApplication","name":"Ultimate Image Compressor & WebP Converter","url":"https://yourdomain.com/","description":"Compress images and convert to WebP online without quality loss. Secure, private, no upload required.","applicationCategory":"PhotoEditingApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0.00","priceCurrency":"USD"}}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"WebApplication","name":"Ultimate Image Compressor & WebP Converter","url":"https://yourdomain.com/","description":"Compress images and convert to WebP or PNG online without quality loss. Secure, private, no upload required.","applicationCategory":"PhotoEditingApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0.00","priceCurrency":"USD"}}</script>
 </head>
 <body>
     <div class="container">
@@ -196,7 +51,7 @@
             <span>🚀</span> Ultimate <span>Image</span> Compressor
         </h1>
         <div class="headline-sub">
-            <b>Compress, optimize &amp; convert to <span style="color:#19ae70">WebP</span> instantly.<br>
+            <b>Compress, optimize &amp; convert to <span style="color:#19ae70">WebP</span> or <span style="color:#4361ee">PNG</span> instantly.<br>
             <span style="color:#4361ee">Zero quality loss, zero uploads, 100% privacy.</span></b>
         </div>
         <form class="upload-box" id="compressorForm" autocomplete="off">
@@ -207,12 +62,16 @@
                 <span class="slider-label">Quality: <span id="qualityVal">90</span></span>
                 <input class="slider" type="range" min="50" max="100" value="90" id="qualitySlider" />
             </div>
+            <div class="format-container" id="formatWrap" style="display:none;">
+                <label class="format-label"><input type="radio" name="format" class="format-radio" value="webp" checked> WebP</label>
+                <label class="format-label"><input type="radio" name="format" class="format-radio" value="png"> PNG</label>
+            </div>
             <button type="submit" class="btn" id="compressBtn" disabled>Compress &amp; Convert</button>
         </form>
         <div class="output-section" id="outputSection" style="display:none;">
             <div class="meta-info" id="beforeInfo"></div>
             <div class="meta-info" id="afterInfo"></div>
-            <a class="download-link" id="downloadLink" download>⬇ Download Compressed WebP</a>
+            <a class="download-link" id="downloadLink" download>⬇ Download Compressed Image</a>
         </div>
     </div>
     <div class="footer">
@@ -225,6 +84,7 @@
     const slider = document.getElementById('qualitySlider');
     const qualityVal = document.getElementById('qualityVal');
     const sliderWrap = document.getElementById('sliderWrap');
+    const formatWrap = document.getElementById('formatWrap');
     const compressBtn = document.getElementById('compressBtn');
     const outputSection = document.getElementById('outputSection');
     const beforeInfo = document.getElementById('beforeInfo');
@@ -232,6 +92,7 @@
     const downloadLink = document.getElementById('downloadLink');
 
     let imageFile, origSize = 0, outputBlob = null;
+    let selectedFormat = 'webp';
 
     imageInput.addEventListener('change', e => {
         if(!imageInput.files[0]) return;
@@ -246,6 +107,7 @@
             preview.src = ev.target.result;
             preview.style.display = 'block';
             sliderWrap.style.display = 'flex';
+            formatWrap.style.display = 'flex';
             compressBtn.disabled = false;
             outputSection.style.display = 'none';
         };
@@ -254,6 +116,13 @@
 
     slider.addEventListener('input', () => {
         qualityVal.textContent = slider.value;
+    });
+
+    // Format radio change
+    document.querySelectorAll('input[name="format"]').forEach(el => {
+        el.addEventListener('change', function() {
+            selectedFormat = this.value;
+        });
     });
 
     document.getElementById('compressorForm').addEventListener('submit', function(e) {
@@ -269,15 +138,17 @@
             canvas.height = img.naturalHeight;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
+            let mimeType = selectedFormat === 'png' ? 'image/png' : 'image/webp';
             canvas.toBlob(blob => {
                 if (!blob) { alert('Compression failed. Try another image.'); compressBtn.disabled = false; return; }
                 outputBlob = blob;
                 afterInfo.textContent = `Compressed Size: ${(blob.size/1024).toFixed(1)} KB`;
+                const ext = selectedFormat === 'png' ? 'png' : 'webp';
                 downloadLink.href = URL.createObjectURL(blob);
-                downloadLink.download = `${imageFile.name.split('.')[0]}-compressed.webp`;
+                downloadLink.download = `${imageFile.name.split('.')[0]}-compressed.${ext}`;
                 outputSection.style.display = 'flex';
                 compressBtn.disabled = false;
-            }, 'image/webp', slider.value/100);
+            }, mimeType, slider.value/100);
         };
         img.onerror = function() { alert('Failed to load image. Please try a different file.'); compressBtn.disabled = false; };
     });
