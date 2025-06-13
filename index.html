@@ -37,10 +37,88 @@
     <div class="container">
         <h1>Ultimate Image Compressor</h1>
         <p>Reduce image size and convert to <b>WebP</b> format without quality loss. All in your browser. Secure, fast, and 100% private. <span style="color:#44bd32;">No uploads, no tracking.</span></p>
-        <form class="upload-box" id="compressorForm">
+        <form class="upload-box" id="compressorForm" autocomplete="off">
             <label class="upload-label" for="imageInput">Upload Image (JPG, PNG, JPEG, GIF, BMP, TIFF)</label>
             <input type="file" accept="image/*" id="imageInput" required />
             <img id="preview" class="preview" style="display:none" alt="Image Preview">
             <div class="slider-container" style="display:none;" id="sliderWrap">
                 <span class="slider-label">Quality: <span id="qualityVal">90</span></span>
-                <input class="slider" type="range" min="50" max="100" value="90" id="qua
+                <input class="slider" type="range" min="50" max="100" value="90" id="qualitySlider" />
+            </div>
+            <button type="submit" class="btn" id="compressBtn" disabled>Compress &amp; Convert</button>
+        </form>
+        <div class="output-section" id="outputSection" style="display:none;">
+            <div class="meta-info" id="beforeInfo"></div>
+            <div class="meta-info" id="afterInfo"></div>
+            <a class="download-link" id="downloadLink" download>Download Compressed WebP</a>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; 2025 Ultimate Image Compressor. 100% free, fast, &amp; secure.<br>
+        Optimized for Google Core Web Vitals. No cookies. No data storage. <a href="#" style="color:#55acee;">Learn More</a>
+    </div>
+    <script>
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const slider = document.getElementById('qualitySlider');
+    const qualityVal = document.getElementById('qualityVal');
+    const sliderWrap = document.getElementById('sliderWrap');
+    const compressBtn = document.getElementById('compressBtn');
+    const outputSection = document.getElementById('outputSection');
+    const beforeInfo = document.getElementById('beforeInfo');
+    const afterInfo = document.getElementById('afterInfo');
+    const downloadLink = document.getElementById('downloadLink');
+
+    let imageFile, origSize = 0, outputBlob = null;
+
+    imageInput.addEventListener('change', e => {
+        if(!imageInput.files[0]) return;
+        imageFile = imageInput.files[0];
+        if(!imageFile.type.startsWith('image/')) {
+            alert('Please upload a valid image file.');
+            return;
+        }
+        origSize = imageFile.size;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            preview.src = ev.target.result;
+            preview.style.display = 'block';
+            sliderWrap.style.display = 'flex';
+            compressBtn.disabled = false;
+            outputSection.style.display = 'none';
+        };
+        reader.readAsDataURL(imageFile);
+    });
+
+    slider.addEventListener('input', () => {
+        qualityVal.textContent = slider.value;
+    });
+
+    document.getElementById('compressorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if(!imageFile) return;
+        compressBtn.disabled = true;
+        beforeInfo.textContent = `Original Size: ${(origSize/1024).toFixed(1)} KB`;
+        const img = new window.Image();
+        img.src = preview.src;
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob(blob => {
+                if (!blob) { alert('Compression failed. Try another image.'); compressBtn.disabled = false; return; }
+                outputBlob = blob;
+                afterInfo.textContent = `Compressed Size: ${(blob.size/1024).toFixed(1)} KB`;
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = `${imageFile.name.split('.')[0]}-compressed.webp`;
+                outputSection.style.display = 'flex';
+                compressBtn.disabled = false;
+            }, 'image/webp', slider.value/100);
+        };
+        img.onerror = function() { alert('Failed to load image. Please try a different file.'); compressBtn.disabled = false; };
+    });
+    </script>
+</body>
+</html>
